@@ -12,16 +12,6 @@ def write(name, token, url, bucket, iaq_index, temperature, humidity, air_pressu
             "air_pressure_pa": air_pressure/100.0}
     }
 
-    # point = {
-    #     "measurement": name,
-    #     "tags":{
-    #         "iaq_index": iaq_index,
-    #         "temperature_c": temperature/100.0,
-    #         "humidity_percent": humidity/100.0,
-    #         "air_pressure_pa": air_pressure/100.0},
-    #     "fields":{"sensor":"Weather station"}
-
-    # }
     
     # Write the point to InfluxDB
     org = "DataX"
