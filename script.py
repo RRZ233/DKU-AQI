@@ -5,7 +5,7 @@ from tinkerforge.ip_connection import IPConnection
 from tinkerforge.bricklet_air_quality import BrickletAirQuality
 import InfluxDBWrite
 
-token = "x8hac3wi6m2Dx85QLV85eGF4FERCYagBNeROnkj_OidTLtiypStbk78z7Cv8isXXHi0SrfWinOZrbGzElOxiVA=="
+token = "sUqJmAnc364b_0ioOV65YLJ4HKWDoiYPZG5gkWX1da2graAYK3pwCH8QJmCOWXcFdPUaSn61AkSbPf0q9vuhNg=="
 org = "DataX"
 host = "https://us-east-1-1.aws.cloud2.influxdata.com"
 
@@ -14,6 +14,7 @@ database="testCode"
 
 
 class WeatherStation:
+    # 4223 is local USB port.
     HOST = "localhost"
     PORT = 4223
     
@@ -34,6 +35,7 @@ class WeatherStation:
         self.ipcon.register_callback(IPConnection.CALLBACK_CONNECTED, self.cb_connected)
         self.ipcon.enumerate()
 
+    #Write data.
     def cb_all_values(self, iaq_index, iaq_index_accuracy, temperature, humidity, air_pressure):
         InfluxDBWrite.write('test2',token,url,bucket,iaq_index,temperature,humidity,air_pressure)
 
