@@ -27,7 +27,7 @@ def write(name, token, url, bucket, iaq_index, temperature, humidity, air_pressu
 def main():
     url = "https://us-east-1-1.aws.cloud2.influxdata.com"
     bucket = "codeTest"
-    token = 'sUqJmAnc364b_0ioOV65YLJ4HKWDoiYPZG5gkWX1da2graAYK3pwCH8QJmCOWXcFdPUaSn61AkSbPf0q9vuhNg=='
+    token = 'kGLCR1mEKZ7Di9dmMBmWPRkR3nn7NBFjzJz50rJsCEwzshAsij-jbSA-GC5XMDbz0VHqR7C-_SXyCXqnvp_rgA=='
     
     # Example values - replace these with actual sensor readings
     iaq_index = 20  # Placeholder value for IAQ index
