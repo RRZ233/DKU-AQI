@@ -5,7 +5,7 @@ from tinkerforge.ip_connection import IPConnection
 from tinkerforge.bricklet_air_quality import BrickletAirQuality
 import InfluxDBWrite
 
-token = "sUqJmAnc364b_0ioOV65YLJ4HKWDoiYPZG5gkWX1da2graAYK3pwCH8QJmCOWXcFdPUaSn61AkSbPf0q9vuhNg=="
+token = "kGLCR1mEKZ7Di9dmMBmWPRkR3nn7NBFjzJz50rJsCEwzshAsij-jbSA-GC5XMDbz0VHqR7C-_SXyCXqnvp_rgA=="
 org = "DataX"
 host = "https://us-east-1-1.aws.cloud2.influxdata.com"
 
