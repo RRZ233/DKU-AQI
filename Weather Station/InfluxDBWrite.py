@@ -17,7 +17,7 @@ def write(name, token, url, bucket, iaq_index, temperature, humidity, air_pressu
     org = "DataX"
     write_options = WriteOptions()
     wco = write_client_options(WriteOptions=write_options)
-    client = InfluxDBClient3(host=url, token=token, database=bucket,org=org,write_client_options=wco)
+    client = InfluxDBClient3(host=url, token=token, database=bucket,org=org,write_client_options=wco,timeout = 30_000)
     client.write(record=point,write_precision="s")
     
     time.sleep(1)
