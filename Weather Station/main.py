@@ -5,12 +5,12 @@ from tinkerforge.ip_connection import IPConnection
 from tinkerforge.bricklet_air_quality import BrickletAirQuality
 import InfluxDBWrite
 
-token = "kGLCR1mEKZ7Di9dmMBmWPRkR3nn7NBFjzJz50rJsCEwzshAsij-jbSA-GC5XMDbz0VHqR7C-_SXyCXqnvp_rgA=="
+token = "m8kcS2P4sXkAJ9bvB0SUcLZurbydl1i-2ci6qypNtKSJ8_y1hPg4OOF1lwNOk3JbxipGIqyPsVUutkcvlUn-aw=="
 org = "DataX"
 host = "https://us-east-1-1.aws.cloud2.influxdata.com"
 
 
-database="testCode"
+database="test"
 
 
 class WeatherStation:
@@ -37,7 +37,7 @@ class WeatherStation:
 
     #Write data.
     def cb_all_values(self, iaq_index, iaq_index_accuracy, temperature, humidity, air_pressure):
-        InfluxDBWrite.write('test2',token,url,bucket,iaq_index,temperature,humidity,air_pressure)
+        InfluxDBWrite.write('calibrate',token,url,bucket,iaq_index,temperature,humidity,air_pressure)
 
     #Enumerate device.
     def cb_enumerate(self, uid, connected_uid, position, hardware_version,
