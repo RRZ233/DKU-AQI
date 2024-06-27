@@ -122,33 +122,56 @@ float fCalulate_IAQ_Index( int gasResistance, float Humidity){
 
 void loop() {
   // put your main code here, to run repeatedly:
+
+  // Wait until it recevices master's call
   while (Serial1.read()!='1'){
     delay(1000);
   }
-    
-  bme68xData data;
-  bme.setHeaterProf(200,100);
-  bme.setOpMode(BME68X_FORCED_MODE);
-  delayMicroseconds(bme.getMeasDur());
-  
-  bme.getAllData();
 
-  //if (bme.fetchData()) {
-  if((bme.readReg(0x73)==12) && bme.fetchData()){
-    bme68xData data = bme.getAllData()[0]; // Get the first data field
-    float gasResistance = data.gas_resistance;
-    float temperature = data.temperature ; // Convert to degrees Celsius
-    float humidity = data.humidity ; // Convert to percentage
-    float airPressure = data.pressure / 1000.0; // Convert to kPa
-    float iaqIndex = fCalulate_IAQ_Index(data.gas_resistance,data.humidity);
-    String AQIData = String(temperature)+ " "+ String(humidity)+ " "+String(airPressure)+" "+ String(iaqIndex)+",";
-    Serial1.print(AQIData);
-    Serial.println(String(temperature)+ " "+ String(humidity)+ " "+String(airPressure)+" "+ String(iaqIndex));
-    //Serial.println(bme.readReg(0x73));
-  }else if(bme.readReg(0x73)!=12){
-    Serial.println(bme.readReg(0x73));
-    setup();
-    delay(1);
+  int count = 0;
+  int num = 5;
+  int lose = 0;
+  float gasResistance =0;
+  float temperature = 0;
+  float humidity = 0;
+  float airPressure = 0;
+
+  // This loop will count each variables num(5 here) times
+  // and caluculate average
+  for (count; count < num; count++){
+    bme68xData data;
+    bme.setHeaterProf(200,100);
+    bme.setOpMode(BME68X_FORCED_MODE);
+    delayMicroseconds(bme.getMeasDur());
+    bme.getAllData();
+
+    // This will check bme situation
+    if((bme.readReg(0x73)==12) && bme.fetchData()){
+      bme68xData data = bme.getAllData()[0]; // Get the first data field
+      gasResistance += data.gas_resistance;
+      temperature += data.temperature;
+      humidity += data.humidity;
+      airPressure += data.pressure / 1000.0; // Convert to kPa
+    }else if(bme.readReg(0x73)!=12){ // Bme fail to perform
+      Serial.println(bme.readReg(0x73));
+      // Record lose number
+      lose += 1;
+      delay(1);
+    }
+    delay(1000); 
   }
-  delay(1000);  
+
+  gasResistance /= (num - lose);
+  temperature /= (num - lose);
+  humidity /= (num - lose);
+  airPressure /= (num - lose);
+  float iaqIndex = fCalulate_IAQ_Index(gasResistance, humidity);
+  String AQIData = String(temperature)+ " "+ String(humidity)+ " "+String(airPressure)+" "+ String(iaqIndex)+",";
+
+  // Write to master
+  Serial1.print(AQIData);
+  Serial.println(String(temperature)+ " "+ String(humidity)+ " "+String(airPressure)+" "+ String(iaqIndex));
+  
+  // Clear Serila1 buffer
+  Serial1.flush();
 }
