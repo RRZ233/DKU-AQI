@@ -9,6 +9,8 @@ WiFiMulti wifiMulti;
 #define INFLUXDB_TOKEN "m8kcS2P4sXkAJ9bvB0SUcLZurbydl1i-2ci6qypNtKSJ8_y1hPg4OOF1lwNOk3JbxipGIqyPsVUutkcvlUn-aw=="
 #define INFLUXDB_ORG "34cc098180bedebe"
 #define INFLUXDB_BUCKET "test"
+#define sensorName "Arduino test"
+#define sensorPlace "IB2073"
 
 // Time zone info
 #define TZ_INFO "UTC8"
@@ -17,7 +19,7 @@ WiFiMulti wifiMulti;
 InfluxDBClient client(INFLUXDB_URL, INFLUXDB_ORG, INFLUXDB_BUCKET, INFLUXDB_TOKEN, InfluxDbCloud2CACert);
 
 // Declare Data point
-Point sensor("Arduino test");
+Point sensor(sensorName);
 
 // WIFI_connect use SSID and Password to connect wifi.
 void WIFI_Connect(const char* ID,const char* PW){
@@ -48,17 +50,14 @@ void WIFI_Connect(const char* ID,const char* PW){
 
 void setup() {
   // put your setup code here, to run once:
-    Serial.begin(9600);
-    Serial.begin(9600);
+  Serial.begin(9600);
 
-    // Define wifi ssid and password
-    const char* WIFI_SSID = "DKU";
-    const char* WIFI_PASSWORD = "Duk3blu3!";
-    WIFI_Connect(WIFI_SSID,WIFI_PASSWORD);
-    sensor.addTag("Place", "IB2073");
-    Serial1.begin(9600, SERIAL_8N1, 43, 44);
-    Serial.begin(9600);
-
+  // Define wifi ssid and password
+  const char* WIFI_SSID = "DKU";
+  const char* WIFI_PASSWORD = "Duk3blu3!";
+  WIFI_Connect(WIFI_SSID,WIFI_PASSWORD);
+  sensor.addTag("Place", sensorPlace);
+  Serial1.begin(9600, SERIAL_8N1, 43, 44);
 }
 
 void loop() {
@@ -66,7 +65,7 @@ void loop() {
   // Get data from salve
   while(1){
     Serial1.print('1');
-    delay(300);
+    delay(3000);
     if (Serial1.available())
       break;
   }
@@ -93,7 +92,7 @@ void loop() {
   sensor.clearFields();
   
   // Store measured value into point
-  if((temperature*humidity*airPressure*iaqIndex)!=0){
+  if(((temperature*humidity*airPressure*iaqIndex)!=0)&&(humidity>0)){
     sensor.addField("Temperature_c", temperature);
     sensor.addField("Humidity_percent", humidity);
     sensor.addField("Air_pressure_kPa", airPressure);
